@@ -1,0 +1,349 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1">
+    <title>@ViewBag.Title - InPlace</title>
+    <!-- Favicon icon -->
+    <link href="~/Template/vendor/jqvmap/css/jqvmap.min.css" rel="stylesheet" />
+    <link href="~/Template/vendor/chartist/css/chartist.min.css" rel="stylesheet" />
+
+    <!-- Vectormap -->
+    <link href="~/Template/vendor/jqvmap/css/jqvmap.min.css" rel="stylesheet" />
+    <link href="~/Template/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/Template/css/style.css" rel="stylesheet" />
+    <link href="~/Template/vendor/owl-carousel/owl.carousel.css" rel="stylesheet" />
+    <link href="~/Template/css/Custom.css" rel="stylesheet" />
+    <style type="text/css">
+        .card-header {
+            background-color: #e7e6e585;
+            height: 60px;
+        }
+
+        [data-header-position="fixed"] .content-body {
+            padding-top: 6rem;
+        }
+
+
+        [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .content-body {
+            margin-left: 3rem;
+        }
+
+        .content-body {
+            margin-left: 16rem;
+        }
+
+        .scroll {
+            overflow: scroll;
+        }
+
+            .scroll::-webkit-scrollbar-track {
+                -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+                background-color: #F5F5F5;
+            }
+
+            .scroll::-webkit-scrollbar {
+                width: 7px;
+                background-color: #F5F5F5;
+            }
+
+            .scroll::-webkit-scrollbar-thumb {
+                background-color: #000000;
+                border: 1px solid #555555;
+            }
+
+        [data-sidebar-style="full"][data-layout="vertical"] .dlabnav .metismenu > li > a {
+            font-size: 15px;
+        }
+
+        .nav-header {
+            width: 15.563rem;
+        }
+
+            .nav-header .brand-logo {
+                padding-left: 30px;
+                padding-right: 30px;
+                font-weight: 600;
+            }
+
+        .dlabnav {
+            width: 13rem;
+        }
+
+        .search-area .form-control {
+            min-height: 30px;
+        }
+
+        .form-control {
+            height: 37px;
+        }
+
+        .thicker {
+            font-weight: 900;
+        }
+
+        .height590 {
+            height: calc(100vh - 120px);
+            overflow-x: hidden;
+        }
+
+        .height690 {
+            height: calc(100vh - 230px);
+            overflow-x: hidden;
+        }
+    </style>
+
+    <script>
+
+        function CreateDDLPortafoglio() {
+            //alert('Aliyan');
+            $.ajax({
+                url: "../../Dashboard/CreateDDLPortafoglio",
+                type: "GET",
+                success: function (response) {
+                    document.getElementById('ddlPortafoglio').innerHTML = "";;
+                    document.getElementById('ddlPortafoglio').innerHTML = response;
+                    //alert('Aliyan');
+                },
+                error: function (response) {
+                    //alert('yooo Error');
+                }
+            });
+        }
+
+        function returnprincipale() {
+            $.ajax({
+                url: "../../Dashboard/vwDashboard",
+                type: "GET",
+                success: function (response) {
+                    document.getElementById('somediv').innerHTML = "";
+                    document.getElementById('somediv').innerHTML = response;
+
+                    //alert('Dossier: ' + document.getElementById('PrevDossier').value);
+
+                    if (document.getElementById('PrevDossier').value.length > 0) GetGroupDocumentsDossier(document.getElementById('PrevDossier').value);
+
+                    //alert('Aliyan');
+                },
+                error: function (response) {
+                    //alert('yooo Error');
+                }
+            });
+            $('#btnreturnback').css('display', 'none');
+        }
+
+        var id_pratica_List = null;
+        var id_pratica_Filtered = null;
+
+        function preparesearch() {
+            var text = document.getElementById('idsearch').value;
+            //alert(text);
+
+            id_pratica_List = document.getElementById('id_pratica_List').value.split(',');
+
+            var h = 0;
+            id_pratica_Filtered = id_pratica_List.filter(
+                function Contains(Item) {
+                    var Result = Item.includes(text);
+                    if (Result) {
+                        document.getElementById(Item).style.visibility = 'visible';
+                        document.getElementById(Item).style.height = '100px';
+                        h += 100;
+                    }
+                    else {
+                        document.getElementById(Item).style.visibility = 'hidden';
+                        document.getElementById(Item).style.height = '0px';
+                    }
+                    return Result;
+                }
+            );
+
+            document.getElementById('Container').style.height = h.toString() + 'px';
+        }
+
+        function GetDocuments(Cluster_ControlId) {
+
+            var Values = Cluster_ControlId.split('&');
+            var Cluster = Values[0].toString();
+            var ControlId = Values[1].toString();
+            var Dossier = Values[2].toString();
+
+            if (document.getElementById(ControlId).attributes['class'].value.search('show') < 0) {
+                //alert(Cluster + ' ' + ControlId);
+                $.ajax({
+                    url: "../../Dashboard/GetDocuments?Dossier=" + Dossier + "&Clustered=True&Cluster=" + Cluster,
+                    type: "GET",
+                    success: function (response) {
+                        //alert(response);
+                        document.getElementById(ControlId).innerHTML = response;
+                    },
+                    error: function (response) {
+                        alert(response);
+                    }
+                });
+            }
+        }
+
+        function GetddltopPortafoglio() {
+            $.ajax({
+                url: "../../Dashboard/GetddltopPortafoglio",
+                type: "GET",
+                success: function (response) {
+                    document.getElementById('ddltopPortafoglio').innerHTML = "";;
+                    document.getElementById('ddltopPortafoglio').innerHTML = response;
+                    //alert('Aliyan');
+                },
+                error: function (response) {
+                    //alert('yooo Error');
+                }
+            });
+        }
+
+        function GetddltopCluster() {
+            $.ajax({
+                url: "../../Dashboard/GetddltopCluster",
+                type: "GET",
+                success: function (response) {
+                    document.getElementById('ddltopCluster').innerHTML = "";;
+                    document.getElementById('ddltopCluster').innerHTML = response;
+                    //alert('Aliyan');
+                },
+                error: function (response) {
+                    //alert('yooo Error');
+                }
+            });
+        }
+
+        function GetDocument(NomeFile_Token) {
+
+
+            var Values = NomeFile_Token.split('&');
+            var NomeFile = Values[0].toString();
+            var Token = Values[1].toString();
+
+            $.ajax({
+                url: "../../Dashboard/GetPreview?Filename=" + NomeFile + "&AlfrescoNode=" + Token,
+                type: "GET",
+                success: function (response) {
+                    //alert(response);
+                    document.getElementById('pdfpreview').innerHTML = response;
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+            //$('#GetAsset').css('visibility', 'visible');
+            //$('#DownloadAsset').css('visibility', 'visible');
+        }
+
+
+        function DownloadDocument(NomeFile_Token) {
+
+            var Values = NomeFile_Token.split('&');
+            var NomeFile = Values[0].toString();
+            var Token = Values[1].toString();
+
+            $.ajax({
+                url: "../../Dashboard/GetPreview?Filename=" + NomeFile + "&AlfrescoNode=" + Token,
+                type: "GET",
+                success: function (response) {
+                    var bs = response.substring(response.indexOf('value=') + 'values='.length, response.indexOf('" />'))
+                    var link = document.createElement('a');
+                    link.href = 'data:application/pdf;base64,' + bs;
+                    link.download = NomeFile;
+                    link.click();
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+        }
+
+        function DownloadAssets() {
+            var csv = document.getElementById('CurrentAssets').value;
+            var link = document.createElement('a');
+            link.href = 'data:application/csv,' + csv;
+            link.download = 'Assets.csv';
+            link.click();
+
+        }
+
+        function GetAssets(Dossier) {
+            $.ajax({
+                url: "../../Dashboard/GetAssets?Dossier=" + Dossier,
+                type: "GET",
+                success: function (response) {
+                    //alert(response);
+                    //document.getElementById('pdfpreview').innerHTML = response;
+                    document.getElementById('dvAssets').innerHTML = response;
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+
+        }
+
+
+    </script>
+</head>
+<body style="overflow-y:hidden;">
+
+    <input type="hidden" id="PrevDossier" />
+    <input type="hidden" id="CurrentAssets" />
+
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+    <div id="main-wrapper">
+
+
+        @*@{Html.RenderAction("Menu", "Menu"); }*@
+
+        @*<div class="navbar navbar-inverse navbar-fixed-top">
+                @Html.ActionLink("InPlace", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>*@
+
+        <div class="content-body">
+            @RenderBody()
+        </div>
+
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <div class="footer" style="display:none;">
+            <div class="copyright">
+                <p>Copyright © Designed &amp; Developed by <a href=".." target="_blank">Mediatica</a> 2021</p>
+            </div>
+        </div>
+        <!--**********************************
+            Footer end
+        ***********************************-->
+
+    </div>
+    <!-- Required vendors -->
+    <script src="~/Template/vendor/global/global.min.js"></script>
+    <script src="~/Template/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="~/Template/vendor/chart.js/Chart.bundle.min.js"></script>
+    <script src="~/Template/js/custom.min.js"></script>
+    <script src="~/Template/js/dlabnav-init.js"></script>
+    <script src="~/Template/vendor/owl-carousel/owl.carousel.js"></script>
+
+
+    <!-- Chart piety plugin files -->
+    <script src="~/Template/vendor/peity/jquery.peity.min.js"></script>
+
+
+</body>
+</html>

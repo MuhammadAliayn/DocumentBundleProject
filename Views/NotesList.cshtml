@@ -1,0 +1,31 @@
+﻿@using System.Data
+@model DataSet
+
+@*<ul class="list-group">
+
+        @foreach (DataRow row in Model.Tables[0].Rows)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center" style="font-size: 14px;">
+                @(row["data_inserimento"].ToString() + "  " + row["Nota"].ToString())
+            </li>
+        }
+    </ul>*@
+
+
+<div class="card" id="dvNotes" style="margin-top: -14px;">
+
+    <div class="card-body" style="overflow-x: hidden;">
+            @foreach (DataRow row in Model.Tables[0].Rows)
+            {
+                <div class="row" style="background: #e7e6e585;padding-left: 30px;height: 30px;font-size: 12px;line-height: 27px;font-weight: 700;">
+                    <div class="col-xl-6">@(row["id_utente"].ToString())</div>
+                    <div class="col-xl-6">@(row["data_inserimento"].ToString())</div>
+                </div>
+                <div class="row" style="height: 60px;padding-left: 30px;height:auto !important;font-size: 12px ">
+                    <div class="col-xl-12">
+                        @(row["Nota"].ToString())
+                    </div>
+                </div>
+            }
+    </div>
+</div>

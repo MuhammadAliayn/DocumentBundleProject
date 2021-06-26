@@ -1,0 +1,256 @@
+﻿@using System.Data
+@model DataSet
+
+<style type="text/css">
+    /*.circle {
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        border-radius: 50%;
+        font-size: 20px;
+        color: #fff;
+        text-align: center;
+        background: #ed0b4c
+    }*/
+
+    .circle {
+        border: 2px solid;
+        background-color: #FFFFFF;
+        height: 50px;
+        border-radius: 50%;
+        width: 50px;
+        text-align: center;
+        line-height: 50px;
+        stroke-width: 10;
+        stroke: #000;
+        transform: translate(5px,5px);
+        stroke-dasharray: 440;
+        stroke-dashoffset: 440;
+        stroke-linecap: round;
+        margin-left: 15px;
+    }
+
+    .pull-right {
+        margin-right: 10px;
+    }
+    /*.circle {
+        position: relative;
+        top: 5px;
+        left: 5px;
+        text-align: center;
+        width: 100px;
+        height: 100px;
+        border-radius: 100%;
+        background-color: #ffffff;
+    }
+
+    .circle-border {
+        position: relative;
+        text-align: center;
+        width: 110px;
+        height: 110px;
+        margin-left: 30%;
+        border-radius: 100%;
+        background-color: #E53B3B;
+        background: linear-gradient(270deg, black 50%, transparent 50%), linear-gradient(0deg, black 50%, lightgray 50%)
+    }*/
+    #Details {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .card-body {
+        padding: 0.875rem;
+    }
+
+    .card-header {
+        background-color: #e7e6e585;
+        height: 60px;
+    }
+
+    .search-area .form-control {
+        min-height: 40px;
+        margin-top: 10px;
+    }
+
+    .search-area .input-group-text i {
+        font-size: 18px;
+        margin-top: 10px;
+    }
+
+    .input-group-append {
+        height: 41px;
+        margin-top: 10px;
+    }
+
+    .border-bottom {
+        margin-left: -14px;
+        margin-right: -14px;
+    }
+
+    .progress {
+        margin-left: 15px;
+    }
+
+    .pb-4, .py-4 {
+        padding-bottom: 0.5rem !important;
+    }
+</style>
+
+<script>
+
+    function GetGroupDocumentsDossier(Dossier) {
+       // alert('GetGroupDocumentsDossier: ' + Dossier);
+
+        $("#dvFascicolo").load("@Url.Action("GetGroupDocuments", "Dashboard")?Dossier=" + Dossier);
+
+
+        //$.ajax({
+        //    url: "../../Dashboard/GetOriginatorDossiers",
+        //    type: "GET",
+        //    data: { id: id },
+        //    success: function (response) {
+        //        alert(response);
+        //    },
+        //    error: function (response) {
+        //        alert(response);
+        //    }
+        //});
+    }
+
+    function GetGroupDocuments(elem) {
+        var Dossier = $(elem).data('assigned-id');
+        $('.border-bottom').css('background-color', 'white');
+        $(elem).css('background-color', '#e7e6e585');
+
+        document.getElementById('PrevDossier').value = Dossier;
+        document.getElementById('CurrentAssets').value = document.getElementById('CSV' + Dossier).value;
+
+        $("#dvFascicolo").load("@Url.Action("GetGroupDocuments", "Dashboard")?Dossier=" + Dossier);
+
+        //$.ajax({
+        //    url: "../../Dashboard/GetOriginatorDossiers",
+        //    type: "GET",
+        //    data: { id: id },
+        //    success: function (response) {
+        //        alert(response);
+        //    },
+        //    error: function (response) {
+        //        alert(response);
+        //    }
+        //});
+    }
+</script>
+
+
+<div class="col-xl-12 col-xxl-12 col-md-6" id="Details">
+    <div class="card">
+        <div class="card-header shadow-sm" >
+            <div class="mr-2">
+                <h4 class="fs-20 mb-0 font-w600 text-black">Fascicoli</h4>
+                <span class="fs-14">Ricerca per ORIGINETOR risultati</span>
+            </div>
+        </div>
+        <div class="input-group search-area d-lg-inline-flex d-none" style="margin-left: 6px;">
+            <div class="input-group-append">
+                <span class="input-group-text">
+                    <a href="javascript:void(0)" onclick="CreateDDLPortafoglio();" data-toggle="modal" data-target="#addOrderModalside"><i class="flaticon-381-search-2"></i></a>
+                </span>
+            </div>
+            <input type="text" id="idsearch" oninput="preparesearch();" class="form-control" placeholder="Search here...">
+        </div>
+        <div class="card-body scroll height690" id="upcomingprojects" style="overflow-x: hidden;padding:0px;">
+            <div id="Container" style="overflow:hidden; width:100%; border: 0px solid black;">
+
+                @{ string id_pratica_list = ""; }
+
+                @foreach (DataRow row in Model.Tables[0].Rows)
+                {
+                    id_pratica_list += row["id_pratica"].ToString() + ",";
+
+
+                    <div id="@(row["id_pratica"].ToString())" style="height:100px;">
+
+                        <div class="border-bottom pb-4 mb-4" id="@("#"+row["id"])" onclick="GetGroupDocuments(this)" data-assigned-id="@(row["id"])" style="cursor:pointer;font-size:12px;">
+                            <div class="media align-items-center">
+                                <div class="circle" style="border:2px solid @("#"+row["score_backcolor"]);color:@("#"+row["score_backcolor"])">
+                                    @(row["score"])
+
+                                    @{
+                                        string value = row["DatiSupplementariCSV"].ToString();
+                                        string id = "CSV" + row["id"];
+                                    }
+                                    <input id="@id" type="hidden" value="@value" />
+
+                                </div>
+                                <div class="d-inline-block mr-3 position-relative donut-chart-sale">
+
+                                </div>
+
+                                <div class="media-body">
+                                    <p class="mb-1"></p>
+                                    <span class="text-black font-w400">@(row["id_pratica"].ToString().Replace("_"," "))</span>
+                                    <br />
+                                    <span class="text-black font-w100">@(row["nominativo"].ToString().Replace("_", " "))</span>
+                                </div>
+                            </div>
+
+                            @{
+                                string statoFascicolo = "";
+
+                                if ((int)row["score"] == 100)
+                                {
+                                    statoFascicolo = "COMPLETO";
+                                }
+                                else if ((int)row["score"] == 0)
+                                {
+                                    statoFascicolo = "DA_VALUTARE";
+                                }
+                                else
+                                {
+                                    statoFascicolo = "INCOMPLETO";
+                                }
+                            }
+
+                            <div style="margin-top: 10px; border:0px solid red; width:290px; text-align:right;">@statoFascicolo</div>
+
+
+                            @*<span class="fs-14 mb-2 d-block font-w500"></span>*@
+                            
+                            <div class="d-flex">
+                                <div class="col-12 pl-0">
+                                    <div class="progress text-center" style="height:7px;margin-top: 10px;">
+                                        @if ((int)row["score"] == 100)
+                                        {
+                                            <div class="progress-bar progress-animated" data-label="Stato Fascicoli" style="width: 100%; height:7px;background-color:forestgreen;" role="progressbar">
+                                                <span class="sr-only"></span>
+                                            </div>
+                                        }
+                                        else if ((int)row["score"] > 50)
+                                        {
+                                            <div class="progress-bar progress-animated" data-label="Stato Fascicoli" style="width: 100%; height:7px;background-color:orange" role="progressbar">
+                                                <span class="sr-only"></span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="progress-bar progress-animated" data-label="Stato Fascicoli" style="width: 100%; height:7px;background-color:#e40d0d" role="progressbar">
+                                                <span class="sr-only"></span>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @{ id_pratica_list = id_pratica_list.Substring(0, id_pratica_list.Length - 1); }
+                <input id="id_pratica_List" type="hidden" value="@id_pratica_list" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

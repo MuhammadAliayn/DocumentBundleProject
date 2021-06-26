@@ -1,0 +1,65 @@
+﻿@using System.Data
+@model DataSet
+
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive" id="dvAssets">
+                <table class="table table-bordered table-striped verticle-middle table-responsive-sm">
+                    <thead>
+                        <tr>
+                            @foreach (System.Data.DataColumn col in Model.Tables[0].Columns)
+                            {
+                                <th>@col.Caption</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (System.Data.DataRow dr in Model.Tables[0].Rows)
+                        {
+                            <tr>
+                                @foreach (System.Data.DataColumn col in Model.Tables[0].Columns)
+                                {
+                                    <td>@dr[col.ColumnName].ToString()</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div class="col-lg-12">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Assets</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table header-border table-responsive-sm">
+                    <thead>
+                        <tr>
+                            @foreach (System.Data.DataColumn col in Model.Tables[0].Columns)
+                            {
+                                <th>@col.Caption</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (System.Data.DataRow dr in Model.Tables[0].Rows)
+                        {
+                            <tr>
+                                @foreach (System.Data.DataColumn col in Model.Tables[0].Columns)
+                                {
+                                    <td>@dr[col.ColumnName].ToString()</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>*@

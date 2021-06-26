@@ -1,0 +1,17 @@
+﻿@using System.Data
+@model DataSet
+
+@foreach (DataRow R in Model.Tables[0].Rows)
+{
+    string __previewonclick = "GetDocument('" + R["NomeDocumento"].ToString() + "&" + R["NodeRef"].ToString() + "');";
+    string __downloadonclick = "DownloadDocument('" + R["NomeDocumento"].ToString() + "&" + R["NodeRef"].ToString() + "');";
+
+<div class="accordion__body--text" style="font-size: 0.8rem;">
+    <i onclick=@__downloadonclick><img src="~/Template/images/pdf.png" /></i>
+    <span onclick=@__previewonclick>@R["NomeDocumento"].ToString().Replace("_", " ")</span>
+    @*<i class="fa fa-eye" style="float:right;margin-right:10px;" ></i>
+    <i class="fa fa-download" style="float:right;margin-right:10px;" ></i>*@
+</div>
+    
+}
+

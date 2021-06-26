@@ -1,0 +1,112 @@
+﻿@using System.Data
+@model DataSet
+
+
+<script>
+
+
+    function myFunction(elem) {
+        var id = $(elem).data('assigned-id');
+        $("#GroupDetails").load("@Url.Action("GetOriginatorDossiers", "Dashboard")?id=" + id);
+
+
+        //$.ajax({
+        //    url: "../../Dashboard/GetOriginatorDossiers",
+        //    type: "GET",
+        //    data: { id: id },
+        //    success: function (response) {
+        //        alert(response);
+        //    },
+        //    error: function (response) {
+        //        alert(response);
+        //    }
+        //});
+    }
+
+</script>
+<style type="text/css">
+    .col-sm-6 {
+        position: relative;
+        width: 100%;
+        padding-right: 3px;
+        padding-left: 3px;
+    }
+</style>
+
+<!-- Add Order -->
+<div class="modal fade" id="addOrderModalside">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Ricerca
+                </h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group" id="ddlPortafoglio">
+                        <label class="text-black font-w500" >Portafoglio</label>
+                        <select id="inputState" class="form-control default-select">
+                            <option value="" selected>Choose...</option>
+                            <option>Option 1</option>
+                            <option>Option 2</option>
+                            <option>Option 3</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-black font-w500">Debitore</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="text-black font-w500">Cluster</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <button type="button" onclick="CircaFascicolo();" class="btn btn-primary">Applica</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-5 scroll height590">
+        <div class="row pagination-container ">
+            @{
+                //string[] colors = { "#8A2BE2", "#5F9EA0", "#6495ED", "#DEB887", "#DC143C", "#2F4F4F", "#556B2F", "#00008B", "#4B0082", "#ADD8E6", "#20B2AA", "Orange", "Purple", "Grey" };
+                //Random rnd = new Random();
+
+            }
+            @foreach (DataRow row in Model.Tables[0].Rows)
+            {
+                //var randomColor = rnd.Next(colors.Length);
+                string color = "#1B7EE8";
+                //color = color.Substring(color.IndexOf("backcolor") + "backcolor\": \"".Length, 6);
+
+                <div class="col-sm-6">
+                    <div class="card text-white text-center" onclick="myFunction(this)" data-assigned-id="@(row["Originator"])" style="background-color: @color;cursor: pointer;height: 95%;">
+                        <div class="card-body">
+                            <div class="media align-items-center">
+                                <div class="media-body mr-3">
+                                    <h2 class="num-text text-white font-w600">@(row["Total"])</h2>
+                                    <span class="fs-14">@(row["Originator"].ToString().Replace("_"," "))</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-xl-3" id="GroupDetails">
+        @*@{Html.RenderAction("GetOriginatorDossiers", "Dashboard"); }*@
+
+    </div>
+    <div class="col-xl-4" id="dvFascicolo">
+
+    </div>
+</div>

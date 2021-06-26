@@ -1,0 +1,140 @@
+﻿@using System.Data
+@model DataSet
+
+@{
+    DataTable Table_0 = null;
+    DataTable Table_1 = null;
+    DataTable Table_2 = null;
+
+    if (Model.Tables.Count == 2)
+    {
+        Table_1 = Model.Tables[0];
+        Table_2 = Model.Tables[1];
+    }
+    else
+    {
+
+    }
+
+}
+<style type="text/css">
+    .row {
+        margin-right: -30px;
+        margin-left: -20px;
+        margin-top: -10px;
+    }
+
+    .accordion__header {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .accordion__item {
+        margin-bottom: 0.25rem;
+    }
+
+    .card-body {
+        font-size: 12px;
+        padding: 5px;
+    }
+
+    .col-xl-7 {
+        padding: 0px;
+    }
+</style>
+
+
+
+<!--**********************************
+     Content body start
+ ***********************************-->
+<!-- Row starts -->
+<div class="row">
+    <!-- Column starts -->
+    <div class="col-xl-5">
+        <div class="card" style="height: auto !important;">
+            <div class="card-header d-block">
+                <h4 class="card-title">@Table_2.Rows[0]["id_pratica"].ToString()</h4>
+            </div>
+            <div class="card-header d-block">
+                <h4 class="card-title">@Table_2.Rows[0]["nominativo"].ToString()</h4>
+            </div>
+            <div class="card-body scroll" style="overflow-x: hidden">
+                <div id="accordion-nine" class="accordion accordion-active-header">
+
+                    @{ int Index = 0; }
+                    @foreach (DataRow R in Model.Tables[0].Rows)
+                    {
+
+                        string Value = R["Label"].ToString().Replace("_", " ");
+                        string id = "active-header_collapse__" + Index.ToString();
+                        string datatarget = "#active-header_collapse__" + Index.ToString();
+                        string Cluster = R["id"].ToString();
+                        string __onclick = "GetDocuments('" + Cluster + "&" + id + "&" + Model.DataSetName + "');";
+
+                        <div class="accordion__item">
+                            <div class="accordion__header collapsed" onclick=@__onclick data-toggle="collapse" data-target=@datatarget>
+                                <span class="accordion__header--icon"></span>
+                                <span class="accordion__header--text">@Value</span>
+                                <span class="badge badge-primary badge-pill" style="float:right;">@R["Total"].ToString()</span>
+                            </div>
+                            <div id=@id class="collapse accordion__body" data-parent="#accordion-nine" style="cursor:pointer">
+                            </div>
+                        </div>
+
+                        Index++;
+
+                    }
+
+                </div>
+
+
+                <div>
+
+                    @{
+                        string __onclickgetassets = "GetAssets('" + Model.DataSetName + "');";
+                        string __onclickdownloadassets = "DownloadAssets();";
+
+                        @*<input id="Prev" class="btn bg-blue-dark text-white btn-block" onclick="returnprincipale()" type="button" value="Prev" Dossier="" />*@
+                        @*<input id="DownloadAsset" class="btn bg-blue-dark text-white btn-block" type="button" value="Download Asset" onclick="@__onclickdownloadassets" />
+                    <input id="Prev" class="btn bg-blue-dark text-white btn-block" onclick="returnprincipale()" type="button" value="Prev" Dossier="" />*@
+                    }
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <!-- Column ends -->
+    <!--<div class="col-xl-7">
+        <div class="card" style="height: auto !important;">
+            <div class="container scroll height640" style="overflow-x:hidden">
+                <div id="pdfpreview" class="embed-responsive">-->
+    @*<object data="../Downloads/client_server-FIFO.pdf" type="application/pdf" class="h-100" width="100%">
+            If you are unable to view file, you can download from
+            <a href="../Downloads/client_server-FIFO.pdf">here</a> or download
+        </object>*@
+    <!--</div>
+            </div>
+        </div>
+    </div>-->
+
+    <div class="col-xl-7">
+        <div class="card scroll" style="overflow-x: hidden;">
+            <div class="container">
+                <input id="GetAsset" class="btn btn-primary btn-xxs" data-toggle="modal" data-target="#exampleModalCenter" style="visibility:hidden;" type="button" value="Get Asset" onclick=@__onclickgetassets />
+                <input id="DownloadAsset" class="btn btn-primary btn-xxs" style="visibility:hidden;" type="button" value="Download Asset" onclick="@__onclickdownloadassets" />
+
+                <div id="pdfpreview" style="width:100%; height:100%;">
+
+                    @*class="embed-responsive"*@
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Row ends -->
+<!--**********************************
+    Content body end
+***********************************-->

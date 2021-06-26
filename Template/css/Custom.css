@@ -1,0 +1,64 @@
+﻿.header, .nav-header {
+    height: 5rem;
+}
+
+.dlabnav {
+    width: 13rem;
+}
+
+[data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .dlabnav {
+    width: 0rem;
+    overflow: hidden;
+    position: absolute;
+    margin-left: 3rem;
+}
+
+@media only screen and (max-width: 1600px) {
+    .content-body .container-fluid, .content-body .container-sm, .content-body .container-md, .content-body .container-lg, .content-body .container-xl {
+        padding-top: 0px;
+        padding-right: 0px;
+        padding-left: 0px;
+        margin-left: -30px;
+        width: 100%;
+    }
+}
+
+.col-sm-6, .col-xl-4 {
+    position: relative;
+    width: 100%;
+    padding-left: 5px;
+}
+
+.content-body {
+    margin-left: 16rem;
+}
+
+#GroupDetails {
+    padding-left: 10px;
+    padding-right: 0px;
+}
+
+#dvFascicolo {
+    padding-left: 10px;
+    padding-right: 5px;
+}
+
+[data-header-position="fixed"] .content-body {
+    padding-top: 6rem;
+}
+
+@media (max-width: 992px) {
+    .pull-left-sm {
+        float: left !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .nofloat-xs {
+        float: none !important;
+    }
+
+    .btn-submit {
+        margin-top: 10px;
+    }
+}

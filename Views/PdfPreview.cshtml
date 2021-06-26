@@ -1,0 +1,12 @@
+﻿@using InPlace4.Models
+@model __mDocumentFile
+
+@{
+//    string Path = Server.MapPath("/Downloads/" + @Model.FileName);
+    string Base64 = System.Convert.ToBase64String(@Model.File);
+
+    <object data=@("data:application/pdf;base64," + Base64) type="application/pdf" style="width:100%; height:75vh;">
+        If you are unable to view file, you can download from <a href=@Path>here</a> or download
+    </object>
+    @Html.Hidden("file", Base64);
+}
